@@ -1,0 +1,67 @@
+{
+    "name": "src_prep",
+    "properties": {
+        "activities": [
+            {
+                "name": "CopySrc_To_sql",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "HttpReadSettings",
+                            "requestMethod": "GET"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "AzureSqlSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_raw",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "load_flag": "salesOrderDetail_2025.csv"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_sqlDB",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "table_name": "SalesOrderDetail"
+                        }
+                    }
+                ]
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-06-21T12:34:06Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

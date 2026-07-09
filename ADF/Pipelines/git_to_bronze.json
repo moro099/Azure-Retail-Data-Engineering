@@ -1,0 +1,145 @@
+{
+    "name": "git_to_bronze",
+    "properties": {
+        "activities": [
+            {
+                "name": "CopyGITdata",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "HttpReadSettings",
+                            "requestMethod": "GET"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "ParquetSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "ParquetWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "CustomerID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "CustomerID",
+                                    "type": "String",
+                                    "physicalType": "UTF8"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "PersonID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "PersonID",
+                                    "type": "String",
+                                    "physicalType": "UTF8"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "StoreID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "StoreID",
+                                    "type": "String",
+                                    "physicalType": "UTF8"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "TerritoryID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "TerritoryID",
+                                    "type": "String",
+                                    "physicalType": "UTF8"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "account number",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "accountNumber",
+                                    "physicalType": "UTF8"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "rowguid",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "rowguid",
+                                    "type": "String",
+                                    "physicalType": "UTF8"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_git",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "load_flag": "customers%20main%20.csv"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_bronze",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "folder_name": "customers",
+                            "file_name": "customers_001"
+                        }
+                    }
+                ]
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-06-27T12:48:48Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

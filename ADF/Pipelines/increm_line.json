@@ -1,0 +1,191 @@
+{
+    "name": "increm_line",
+    "properties": {
+        "activities": [
+            {
+                "name": "Last_load",
+                "type": "Lookup",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureSqlSource",
+                        "sqlReaderQuery": {
+                            "value": "SELECT last_load\nFROM water_table\nWHERE Table_Name = '@{pipeline().parameters.Table_name}'",
+                            "type": "Expression"
+                        },
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "dataset": {
+                        "referenceName": "ds_sqlDB",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "table_name": "water_table"
+                        }
+                    },
+                    "firstRowOnly": true
+                }
+            },
+            {
+                "name": "current_load",
+                "type": "Lookup",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureSqlSource",
+                        "sqlReaderQuery": " SELECT MAX(ModifiedDate) AS current_load\nFROM SalesOrderDetail;",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "dataset": {
+                        "referenceName": "ds_sqlDB",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "table_name": "SalesOrderDetail"
+                        }
+                    },
+                    "firstRowOnly": true
+                }
+            },
+            {
+                "name": "Copy_increm_data",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Last_load",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "current_load",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureSqlSource",
+                        "sqlReaderQuery": {
+                            "value": "@concat(\n'SELECT * FROM ',\npipeline().parameters.Table_name,\n' WHERE ModifiedDate > ''',\nactivity('Last_load').output.firstRow.last_load,\n''' AND ModifiedDate <= ''',\nactivity('current_load').output.firstRow.current_load,\n''''\n)",
+                            "type": "Expression"
+                        },
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "sink": {
+                        "type": "ParquetSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "ParquetWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_sqlDB",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "table_name": "SalesOrderDetail"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_bronze",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "folder_name": "salesOrderDetail/increm_",
+                            "file_name": "."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "watermark_update",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Copy_increm_data",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[updatewatermarkTable]",
+                    "storedProcedureParameters": {
+                        "lastload": {
+                            "value": {
+                                "value": "@activity('current_load').output.firstRow.current_load",
+                                "type": "Expression"
+                            },
+                            "type": "DateTime"
+                        },
+                        "tableName": {
+                            "value": "SalesOrderDetail",
+                            "type": "String"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "ls_sqlDB",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "parameters": {
+            "Table_name": {
+                "type": "string",
+                "defaultValue": "SalesOrderDetail"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2026-07-01T07:43:33Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
