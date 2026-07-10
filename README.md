@@ -1,8 +1,8 @@
 #  Azure Retail Data Engineering Platform
 
-> End-to-End Azure Data Engineering Project using Azure Data Factory, Azure Databricks, ADLS Gen2, Delta Lake, Azure Synapse Serverless SQL, Power BI, GitHub and Azure DevOps CI
+> End-to-End Azure Data Engineering Project using Azure Data Factory, Azure Databricks, ADLS Gen2, Delta Lake, Azure Synapse Serverless SQL, Power BI, GitHub and Azure DevOps CI.
 
-
+>
 ![Azure](https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)
 ![ADF](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge)
 ![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
