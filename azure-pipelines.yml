@@ -55,18 +55,18 @@ steps:
           Write-Host "✓ $($file.Name)"
       }
 
-# Validate Databricks Notebooks
+# Validate Databricks Notebooks Files
 - task: PowerShell@2
-  displayName: 'Validate Databricks Notebooks'
+  displayName: 'Validate Databricks Notebooks Files'
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "===== Validating Databricks Notebooks ====="
+      Write-Host "===== Validating Databricks Notebooks Files ====="
 
       $files = Get-ChildItem Databricks -Recurse -Filter *.py
 
       if ($files.Count -eq 0) {
-          Write-Host "No Databricks notebooks found."
+          Write-Host "No Databricks notebooks Files found."
           exit 1
       }
 
@@ -148,7 +148,7 @@ steps:
     echo "BUILD SUCCESSFUL"
     echo "ADF JSON validated"
     echo "SQL scripts validated"
-    echo "Databricks notebooks validated"
+    echo "Databricks notebooks Files validated"
     echo "Power Bi validated"
     echo "Artifacts published successfully"
     echo "=================================="
