@@ -28,13 +28,21 @@ The project also integrates GitHub with Azure DevOps to automate Continuous Inte
 ⚙️ Technology Stack
 # Service	Purpose
 . Azure Data Factory	Data ingestion, orchestration, and pipeline automation.
+
 . Azure SQL Database	Source system for transactional data.
+
 . GitHub	Version control for code and source CSV files.
+
 . Azure Blob Storage	Source system.
+
 . ADLS Gen2	Storage for all three layers (Bronze, Silver, Gold).
+
 . Azure Databricks	Distributed data transformation and processing (PySpark).
+
 . Azure Synapse Serverless SQL	Analytics layer for querying Gold layer data.
+
 . Power BI	Business intelligence and interactive dashboarding.
+
 . Azure DevOps	Continuous Integration (CI) pipeline.
  
 # Data Pipeline Workflow
@@ -52,7 +60,6 @@ Raw data is ingested directly into ADLS Gen2 as Parquet files.
 
 No transformations are applied, ensuring an immutable audit trail.
 
-Historical data is retained for reprocessing and troubleshooting.
 
 3️. Silver Layer (Databricks)
 Azure Databricks performs the following operations using PySpark and Delta Lake:
@@ -60,10 +67,15 @@ Azure Databricks performs the following operations using PySpark and Delta Lake:
  Azure Databricks performs:
 
 • Data Cleaning
+
 • Duplicate Removal
+
 • Data Type Conversion
+
 • String Standardization
+
 • Null Validation
+
 • Delta MERGE (Incremental Processing)
 
 4️. Gold Layer (Databricks)
