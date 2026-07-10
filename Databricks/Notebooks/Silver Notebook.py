@@ -397,11 +397,11 @@ df_salesOrderHeader= ( df_salesOrderHeader.withColumn("SalesOrderID", col("Sales
     .withColumn("CurrencyRateID", col("CurrencyRateID").cast(IntegerType())))
 
     # Cast small integer columns
- df_salesOrderHeader= (df_salesOrderHeader.withColumn("RevisionNumber", col("RevisionNumber").cast(ShortType()))
+df_salesOrderHeader= (df_salesOrderHeader.withColumn("RevisionNumber", col("RevisionNumber").cast(ShortType()))
     .withColumn("Status", col("Status").cast(ShortType())))
 
     # Boolean
- df_salesOrderHeader= (df_salesOrderHeader.withColumn("OnlineOrderFlag", col("OnlineOrderFlag").cast(BooleanType())))
+df_salesOrderHeader= (df_salesOrderHeader.withColumn("OnlineOrderFlag", col("OnlineOrderFlag").cast(BooleanType())))
 
     # Decimal columns
 df_salesOrderHeader= (df_salesOrderHeader.withColumn("SubTotal", col("SubTotal").cast(DecimalType(18,2)))
