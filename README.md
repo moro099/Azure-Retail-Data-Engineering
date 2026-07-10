@@ -197,6 +197,8 @@ Publishes build artifacts for subsequent deployment.
 
 This ensures that only validated code is merged, significantly reducing deployment failures.
 
+![CI](https://github.com/moro099/Azure-Retail-Data-Engineering/blob/1f056e194be39da7e54e1530a651a5a0ccbcff7f/Screenshots/Screenshot%202026-07-10%20233321.png)
+
  
 
 # Business Outcomes
