@@ -1,0 +1,163 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+# Checkout Repository
+- checkout: self
+  displayName: 'Checkout Repository'
+
+# Validate ADF Pipeline JSON Files
+- task: PowerShell@2
+  displayName: 'Validate ADF Pipelines'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "===== Validating ADF Pipelines ====="
+
+      $files = Get-ChildItem ADF/Pipelines/*.json -ErrorAction SilentlyContinue
+
+      if ($files.Count -eq 0) {
+          Write-Host "No pipeline JSON files found."
+          exit 1
+      }
+
+      foreach ($file in $files) {
+          try {
+              Get-Content $file.FullName | ConvertFrom-Json | Out-Null
+              Write-Host "✓ $($file.Name) is a valid JSON."
+          }
+          catch {
+              Write-Host "✗ Invalid JSON : $($file.Name)"
+              exit 1
+          }
+      }
+
+# Validate SQL Scripts
+- task: PowerShell@2
+  displayName: 'Validate SQL Scripts'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "===== Validating SQL Scripts ====="
+
+      $files = Get-ChildItem SQL/*.sql -ErrorAction SilentlyContinue
+
+      if ($files.Count -eq 0) {
+          Write-Host "No SQL files found."
+          exit 1
+      }
+
+      foreach ($file in $files) {
+          Write-Host "✓ $($file.Name)"
+      }
+
+# Validate Databricks Notebooks
+- task: PowerShell@2
+  displayName: 'Validate Databricks Notebooks Syntax'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "===== Validating Databricks Notebooks Syntax ====="
+
+      $files = Get-ChildItem Databricks -Recurse -Filter *.py
+
+      if ($files.Count -eq 0) {
+          Write-Host "No Databricks notebooks found."
+          exit 1
+      }
+
+      foreach ($file in $files) {
+          python -m py_compile $file.FullName
+
+          if ($LASTEXITCODE -eq 0) {
+              Write-Host "✓ $($file.Name)"
+          }
+          else {
+              Write-Host "✗ Syntax Error : $($file.Name)"
+              exit 1
+          }
+      }
+
+# Validate Power BI
+- task: PowerShell@2
+  displayName: 'Validate Power BI'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "===== Validating Power BI ====="
+
+      $files = Get-ChildItem PowerBI/*.pbix -ErrorAction SilentlyContinue
+
+      if ($files.Count -eq 0) {
+          Write-Host "No PBIX file found."
+          exit 1
+      }
+
+      foreach ($file in $files) {
+          if ($file.Length -eq 0) {
+              Write-Host "Empty PBIX file."
+              exit 1
+          }
+
+          Write-Host "✓ $($file.Name)"
+      }
+
+# Validate Folder Structure
+- task: PowerShell@2
+  displayName: 'Validate Project Structure'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "===== Checking Project Structure ====="
+
+      $folders = @(
+        "ADF",
+        "Databricks",
+        "SQL",
+        "PowerBI"
+      )
+
+      foreach ($folder in $folders) {
+
+          if(Test-Path $folder){
+              Write-Host "✓ $folder"
+          }
+          else{
+              Write-Host "✗ Missing Folder : $folder"
+              exit 1
+          }
+
+      }
+
+# Build Information
+- script: |
+    echo "=================================="
+    echo "Build Number : $(Build.BuildNumber)"
+    echo "Repository   : $(Build.Repository.Name)"
+    echo "Branch       : $(Build.SourceBranchName)"
+    echo "=================================="
+  displayName: 'Build Information'
+
+# Publish Build Artifacts
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts'
+  inputs:
+    PathtoPublish: '.'
+    ArtifactName: 'AzureRetailProject'
+    publishLocation: 'Container'
+
+# Build Summary
+- script: |
+    echo "=================================="
+    echo "BUILD SUCCESSFUL"
+    echo "ADF JSON validated"
+    echo "SQL scripts validated"
+    echo "Databricks notebooks validated"
+    echo "Power BI validated"
+    echo "Artifacts published successfully"
+    echo "=================================="
+  displayName: 'Build Summary'
