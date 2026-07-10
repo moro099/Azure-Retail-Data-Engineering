@@ -193,6 +193,11 @@ Azure DevOps CI Pipeline: Automated validation ensures production-grade code.
 The Power BI dashboard includes the following sections:
 
 .. Executive Overview..
+
+![Executive overview]( )
+
+
+
 Total Revenue: Overall sales revenue.
 
 Total Orders: Count of all orders.
@@ -211,6 +216,8 @@ Top 10 products by Revenue
 
 
 #.Business Insights
+
+![Product and Territory analysis](https://github.com/moro099/Azure-Retail-Data-Engineering/blob/e5ac1a43cd3ed4686cb929a225c617fc56c63910/Screenshots/Screenshot%202026-07-10%20224126.png)
 
 
 Top 10 Products by Quantity sold
