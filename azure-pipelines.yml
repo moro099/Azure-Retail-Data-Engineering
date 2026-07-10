@@ -82,7 +82,7 @@ steps:
     script: |
       Write-Host "===== Validating Power Bi ====="
 
-      $files = Get-ChildItem Power Bi/*.pbix -ErrorAction SilentlyContinue
+       $files = Get-ChildItem "Power Bi" -Recurse -Filter *.pbix -ErrorAction SilentlyContinue
 
       if ($files.Count -eq 0) {
           Write-Host "No PBIX file found."
