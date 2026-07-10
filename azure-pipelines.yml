@@ -74,7 +74,7 @@ steps:
           Write-Host "✓ $($file.Name)"
       }
 
-# Validate Power BI
+# Validate Power Bi
 - task: PowerShell@2
   displayName: 'Validate Power Bi'
   inputs:
@@ -110,7 +110,7 @@ steps:
         "ADF",
         "Databricks",
         "SQL",
-        "PowerBI"
+        "Power Bi"
       )
 
       foreach ($folder in $folders) {
@@ -149,7 +149,7 @@ steps:
     echo "ADF JSON validated"
     echo "SQL scripts validated"
     echo "Databricks notebooks validated"
-    echo "Power BI validated"
+    echo "Power Bi validated"
     echo "Artifacts published successfully"
     echo "=================================="
   displayName: 'Build Summary'
