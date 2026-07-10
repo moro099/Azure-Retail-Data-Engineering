@@ -621,4 +621,3 @@ spark.read.format("delta").load(silver_path) \
 spark.read.format("delta").load(silver_path) \
 .filter("SalesOrderDetailID IN (13,14,15,16,17)") \
 .show()
-# -- CI Trigger Test
