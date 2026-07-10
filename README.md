@@ -137,7 +137,7 @@ Synapse Serverless SQL Views: Cost-effective analytics layer without a dedicated
 
 Interactive Power BI Dashboard
 
-Azure DevOps CI Pipeline: Automated validation ensures production-grade code.
+Azure DevOps CI Pipeline: Automatically validates Azure Data Factory pipeline JSON files, SQL scripts, Databricks notebooks, Power BI assets, and project structure to ensure code quality and build reliability.
 
 # Dashboard Highlights
 The Power BI dashboard includes the following sections:
@@ -183,7 +183,7 @@ Whenever code is pushed to the main branch, the CI pipeline (azure-pipelines.yml
 
 Checks out the latest source code.
 
-Validates ADF pipeline JSON files against Azure Data Factory schemas.
+Validates ADF pipeline JSON files
 
 Verifies SQL scripts required for the project.
 
@@ -197,6 +197,8 @@ Publishes build artifacts for subsequent deployment.
 
 This ensures that only validated code is merged, significantly reducing deployment failures.
 
+ 
+
 # Business Outcomes
 Automated end-to-end retail data ingestion.
 
@@ -209,11 +211,13 @@ Automated CI Validation
 # Future Enhancements
 Continuous Deployment (CD): Automate deployment to higher environments.
 
-Databricks Asset Bundles: Standardize and automate Databricks job deployment.
+SCD type 2
 
 Monitoring & Alerting: Implement logs, metrics, and alerting using Azure Monitor.
 
 Security and Governance: By Unity Catalog
+
+Delta Lake Optimization (OPTIMIZE, ZORDER, VACUUM)
 
 Data Quality Framework: Integrate Great Expectations for automated data validation.
 
