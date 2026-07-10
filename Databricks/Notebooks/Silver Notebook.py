@@ -388,32 +388,32 @@ df_salesOrderHeader = (df_salesOrderHeader.withColumn("SalesOrderNumber", trim(c
 # COMMAND ----------
 
  # Cast integer columns
-df_salesOrderHeader= ( df_salesOrderHeader.withColumn("SalesOrderID", col("SalesOrderID").cast(IntegerType()))
-     .withColumn("TerritoryID", col("TerritoryID").cast(IntegerType()))
-    .withColumn("BillToAddressID", col("BillToAddressID").cast(IntegerType()))
-    .withColumn("ShipToAddressID", col("ShipToAddressID").cast(IntegerType()))
-    .withColumn("ShipMethodID", col("ShipMethodID").cast(IntegerType()))
-    .withColumn("CreditCardID", col("CreditCardID").cast(IntegerType()))
-    .withColumn("CurrencyRateID", col("CurrencyRateID").cast(IntegerType())))
+df_salesOrderHeader = df_salesOrderHeader.withColumn(
+    "RevisionNumber",
+    col("RevisionNumber").cast(ShortType())
+)
 
-    # Cast small integer columns
-df_salesOrderHeader= (df_salesOrderHeader.withColumn("RevisionNumber", col("RevisionNumber").cast(ShortType()))
-    .withColumn("Status", col("Status").cast(ShortType())))
+df_salesOrderHeader = df_salesOrderHeader.withColumn(
+    "Status",
+    col("Status").cast(ShortType())
+)
 
-    # Boolean
-df_salesOrderHeader= (df_salesOrderHeader.withColumn("OnlineOrderFlag", col("OnlineOrderFlag").cast(BooleanType())))
+df_salesOrderHeader = df_salesOrderHeader.withColumn(
+    "OnlineOrderFlag",
+    col("OnlineOrderFlag").cast(BooleanType())
+)
 
-    # Decimal columns
-df_salesOrderHeader= (df_salesOrderHeader.withColumn("SubTotal", col("SubTotal").cast(DecimalType(18,2)))
+df_salesOrderHeader = (
+    df_salesOrderHeader
+    .withColumn("SubTotal", col("SubTotal").cast(DecimalType(18,2)))
     .withColumn("TaxAmt", col("TaxAmt").cast(DecimalType(18,2)))
     .withColumn("Freight", col("Freight").cast(DecimalType(18,2)))
     .withColumn("TotalDue", col("TotalDue").cast(DecimalType(18,2)))
-
-    # Timestamp columns
     .withColumn("OrderDate", col("OrderDate").cast(TimestampType()))
     .withColumn("DueDate", col("DueDate").cast(TimestampType()))
     .withColumn("ShipDate", col("ShipDate").cast(TimestampType()))
-    .withColumn("ModifiedDate", col("ModifiedDate").cast(TimestampType())))
+    .withColumn("ModifiedDate", col("ModifiedDate").cast(TimestampType()))
+)
 
      
 
@@ -621,3 +621,4 @@ spark.read.format("delta").load(silver_path) \
 spark.read.format("delta").load(silver_path) \
 .filter("SalesOrderDetailID IN (13,14,15,16,17)") \
 .show()
+# -- CI Trigger Test
