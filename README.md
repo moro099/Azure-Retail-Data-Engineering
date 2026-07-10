@@ -146,15 +146,16 @@ Azure Synapse Serverless SQL exposes the Gold layer data through external views
 Secure data access for Power BI and other consuming applications.
 
 6️. Reporting (Power BI)
-Power BI dashboards provide interactive visualizations of business KPIs, including:
 
-Executive Snapshot: Top-line metrics (Revenue, Orders, Customers).
+. Power BI dashboards provide interactive visualizations of business KPIs, including:
 
-Sales Trends: Monthly, quarterly, and yearly analysis.
+. Executive Snapshot: Top-line metrics (Revenue, Orders, Customers).
 
-Product Performance: Best-selling products and categories.
+. Sales Trends
 
-Territory Insights: Revenue and market share by region.
+. Product Performance: Best-selling products and categories.
+
+. Territory Insights: Revenue and market share by region.
 
 # Key Features
 Multi-Source Ingestion: Combines data from structured (SQL) and unstructured (Blob/GitHub) sources.
@@ -194,7 +195,7 @@ The Power BI dashboard includes the following sections:
 
 .. Executive Overview..
 
-![Executive overview]( )
+![Executive overview](https://github.com/moro099/Azure-Retail-Data-Engineering/blob/54340dca4e02aeb86fe48dd7d8951d719a30a050/Screenshots/Screenshot%202026-07-10%20225534.png)
 
 
 
