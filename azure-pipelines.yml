@@ -76,13 +76,13 @@ steps:
 
 # Validate Power BI
 - task: PowerShell@2
-  displayName: 'Validate Power BI'
+  displayName: 'Validate Power Bi'
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "===== Validating Power BI ====="
+      Write-Host "===== Validating Power Bi ====="
 
-      $files = Get-ChildItem PowerBI/*.pbix -ErrorAction SilentlyContinue
+      $files = Get-ChildItem Power Bi/*.pbix -ErrorAction SilentlyContinue
 
       if ($files.Count -eq 0) {
           Write-Host "No PBIX file found."
