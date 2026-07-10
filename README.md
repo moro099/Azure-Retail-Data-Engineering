@@ -20,86 +20,23 @@ The platform ingests data from multiple sources (GitHub, Azure SQL, Azure Blob),
 The project also integrates GitHub with Azure DevOps to automate Continuous Integration (CI), ensuring code quality and reliability.
 
 # Architecture
-(Add your architecture diagram here)
+
+![Architure Diagram](https://github.com/moro099/Azure-Retail-Data-Engineering/blob/7ba01be18d38d9a733078dbbe827834cd6096d2a/Architecture/Diagram.png)
 
 
-+---------------------------+          +---------------------------+          +---------------------------+
-|        SOURCES            |          |        INGESTION          |          |        STORAGE            |
-+---------------------------+          +---------------------------+          +---------------------------+
-|  GitHub CSV Files         | -------> |  Azure Data Factory       | -------> |  ADLS Gen2 (Bronze)       |
-|  Azure SQL Database       | -------> |  • Metadata-Driven Pipe   |          |  Raw Data (Parquet)       |
-|  Azure Blob Storage       | -------> |  • Incremental Pipeline   |          |                           |
-+---------------------------+          |  • Schedule/Event Trig    |          +---------------------------+
-                                       +---------------------------+                     |
-                                                                                         ▼
-                                       +---------------------------+          +---------------------------+
-                                       |     TRANSFORMATION        |          |        STORAGE            |
-                                       +---------------------------+          +---------------------------+
-                                       |  Azure Databricks         | -------> |  ADLS Gen2 (Silver)       |
-                                       |  Data Cleaning & Val.     |          |  Cleaned Data (Delta)     |
-                                       |                           |          |                           |
-                                       +---------------------------+          +---------------------------+
-                                                                                         |
-                                                                                         ▼
-                                       +---------------------------+          +---------------------------+
-                                       |     TRANSFORMATION        |          |        STORAGE            |
-                                       +---------------------------+          +---------------------------+
-                                       |  Azure Databricks         | -------> |  ADLS Gen2 (Gold)         |
-                                       |  Business Aggregations    |          |  Business Ready (Delta)   |
-                                       |                           |          |                           |
-                                       +---------------------------+          +---------------------------+
-                                                                                         |
-                                       +---------------------------+          +---------------------------+
-                                       |     ANALYTICS & REPORTS   |          |        OUTPUT             |
-                                       +---------------------------+          +---------------------------+
-                                       |  Azure Synapse Serverless | -------> |  Power BI Dashboard       |
-                                       |  (SQL Views)              |          |  Executive KPIs & Insights |
-                                       +---------------------------+          +---------------------------+
-
-+---------------------------+          +---------------------------+
-|    CI / CD               |          |   VERSION CONTROL         |
-+---------------------------+          +---------------------------+
-|  GitHub                  | -------> |  Azure DevOps CI Pipeline |
-|  (Source Control)        |          |  (Automated Validation)   |
-+---------------------------+          +---------------------------+
+ 
 ⚙️ Technology Stack
-Service	Purpose
-Azure Data Factory	Data ingestion, orchestration, and pipeline automation.
-Azure SQL Database	Source system for transactional data.
-GitHub	Version control for code and source CSV files.
-Azure Blob Storage	Source system.
-ADLS Gen2	Storage for all three layers (Bronze, Silver, Gold).
-Azure Databricks	Distributed data transformation and processing (PySpark).
-Delta Lake	Optimized storage format with ACID transactions
-Azure Synapse Serverless SQL	Analytics layer for querying Gold layer data.
-Power BI	Business intelligence and interactive dashboarding.
-Azure DevOps	Continuous Integration (CI) pipeline.
-📂 Project Structure
-text
-Azure-Retail-Data-Engineering/
-│
-├── 📁 ADF/                             # Azure Data Factory assets
-│   ├── pipelines/                      # JSON pipeline definitions
-│   
-│                    
-│
-├── 📁 Databricks/                      # Azure Databricks notebooks
-│   ├── notebooks/                      # .ipynb or .py files for transformations
-│   │   ├── 1_bronze_to_silver.py
-│   │   └── 2_silver_to_gold.py
-│                      
-│
-├── 📁 SQL/                             # SQL scripts
-│   └── synapse_views.sql               # Serverless SQL view definitions
-│
-├── 📁 PowerBI/                         # Power BI reports
-│   └── retail_dashboard.pbix
-│
-├── 📁 Architecture/                    # Diagrams and documentation
-│   └── architecture-diagram.png
-│
-├── 📄 azure-pipelines.yml              # Azure DevOps CI pipeline definition
-└── 📄 README.md                        # Project overview (this file)
+# Service	Purpose
+. Azure Data Factory	Data ingestion, orchestration, and pipeline automation.
+. Azure SQL Database	Source system for transactional data.
+. GitHub	Version control for code and source CSV files.
+. Azure Blob Storage	Source system.
+. ADLS Gen2	Storage for all three layers (Bronze, Silver, Gold).
+. Azure Databricks	Distributed data transformation and processing (PySpark).
+. Azure Synapse Serverless SQL	Analytics layer for querying Gold layer data.
+. Power BI	Business intelligence and interactive dashboarding.
+. Azure DevOps	Continuous Integration (CI) pipeline.
+ 
 # Data Pipeline Workflow
 1️. Data Ingestion
 Azure Data Factory orchestrates data ingestion from three distinct sources:
