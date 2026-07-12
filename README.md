@@ -107,7 +107,9 @@ Secure data access for Power BI and other consuming applications.
 . Territory Insights: Revenue and market share by region.
 
 # Key Features
-Multi-Source Ingestion: Combines data from structured (SQL) and unstructured (Blob/GitHub) sources.
+Multi-Source Ingestion: Combines data from structured (SQL) and unstructured Blob,GitHub sources.
+
+Processed over 100k+ records.
 
 >Incremental Processing
 
